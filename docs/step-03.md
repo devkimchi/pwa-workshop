@@ -86,10 +86,10 @@ az ad sp create-for-rbac \
       run: |
         npm run build
 
-    - name: Test app
-      shell: bash
-      run: |
-        npm run test
+    # - name: Test app
+    #   shell: bash
+    #   run: |
+    #     npm run test
 ```
 
 여기까지 수정한 후 푸시합니다. 그리고 결과를 확인합니다. 다음에 아래 액션을 추가합니다. 다시 실패하는 것을 확인합니다.
