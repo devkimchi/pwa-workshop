@@ -132,7 +132,7 @@ az keyvault secret set \
 
 ```yaml
     - name: Access to Key Vault
-      uses: actions/get-keyvault-secrets
+      uses: azure/get-keyvault-secrets@v1.0
       id: keyvault_secrets
       with:
         keyvault: <KEY_VAULT_NAME>
