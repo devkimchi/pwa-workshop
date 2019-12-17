@@ -1,0 +1,187 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "locationCode": {
+      "type": "string",
+      "metadata": {
+        "description": "Location code where the resource is provisioned."
+      },
+      "defaultValue": "krc"
+    },
+
+    "storageAccountNames": {
+      "type": "string",
+      "metadata": {
+        "description": "Comma delimited names of the Storage Account."
+      }
+    },
+    "storageAccountSkuName": {
+      "type": "string",
+      "metadata": {
+        "description": "SKU Name of the Storage Account."
+      },
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_ZRS",
+        "Standard_RGRS"
+      ],
+      "defaultValue": "Standard_LRS"
+    },
+    "storageAccountSkuTier": {
+      "type": "string",
+      "metadata": {
+        "description": "SKU family of the Storage Account."
+      },
+      "defaultValue": "Standard"
+    },
+
+    "keyVaultName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Key Vault."
+      }
+    },
+    "keyVaultSkuName": {
+      "type": "string",
+      "metadata": {
+        "description": "SKU Name of the Key Vault."
+      },
+      "defaultValue": "Standard"
+    },
+    "keyVaultSkuFamily": {
+      "type": "string",
+      "metadata": {
+        "description": "SKU family of the Key Vault."
+      },
+      "defaultValue": "A"
+    },
+    "keyVaultEnabledForDeployment": {
+      "type": "bool",
+      "metadata": {
+        "description": "Value indicating whether to enable Key Vault for VM deployment or not."
+      },
+      "defaultValue": false
+    },
+    "keyVaultEnabledForDiskEncryption": {
+      "type": "bool",
+      "metadata": {
+        "description": "Value indicating whether to enable Key Vault for disk encryption or not."
+      },
+      "defaultValue": false
+    },
+    "keyVaultEnabledForTemplateDeployment": {
+      "type": "bool",
+      "metadata": {
+        "description": "Value indicating whether to enable Key Vault for template deployment or not."
+      },
+      "defaultValue": false
+    },
+
+    "locationLookup": {
+      "type": "object",
+      "metadata": {
+        "description": "The reference to lookup location - DO NOT TOUCH"
+      },
+      "defaultValue": {
+        "auc": "australiacentral",
+        "aue": "australiaeast",
+        "ause": "australiasoutheast",
+        "jpe": "japaneast",
+        "jpw": "japanwest",
+        "krc": "koreacentral",
+        "krs": "koreasouth",
+        "ea": "eastasia",
+        "sea": "southeastasia"
+      }
+    }
+  },
+  "variables": {
+    "location": "[if(contains(parameters('locationLookup'), parameters('locationCode')), parameters('locationLookup')[parameters('locationCode')], resourceGroup().location)]",
+
+    "storageAccount": {
+      "names": "[split(parameters('storageAccountNames'), ',')]",
+      "apiVersion": "[providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "[parameters('storageAccountSkuName')]",
+        "tier": "[parameters('storageAccountSkuTier')]"
+      }
+    },
+
+    "keyVault": {
+      "name": "[parameters('keyVaultName')]",
+      "apiVersion": "[providers('Microsoft.KeyVault', 'vaults').apiVersions[0]]",
+      "resourceId": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "[parameters('keyVaultSkuName')]",
+        "family": "[parameters('keyVaultSkuFamily')]"
+      },
+      "enabledForDeployment": "[parameters('keyVaultEnabledForDeployment')]",
+      "enabledForDiskEncryption": "[parameters('keyVaultEnabledForDiskEncryption')]",
+      "enabledForTemplateDeployment": "[parameters('keyVaultEnabledForTemplateDeployment')]"
+    },
+    "tags": {
+      "author": "Justin Yoo",
+      "profile": "https://twitter.com/justinchronicle",
+      "projectUrl": "https://github.com/devkimchi/pwa-workshop",
+      "repositoryUrl": "https://github.com/devkimchi/pwa-workshop",
+      "license": "https://raw.githubusercontent.com/devkimchi/pwa-workshop/master/LICENSE"
+    }
+  },
+  "resources": [
+    {
+      "comments": "### RESOURCE - STORAGE ACCOUNT ###",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "[variables('storageAccount').apiVersion]",
+      "copy": {
+        "name": "storageAccountCopy",
+        "count": "[length(variables('storageAccount').names)]"
+      },
+      "name": "[variables('storageAccount').names[copyIndex()]]",
+      "location": "[variables('storageAccount').location]",
+      "kind": "StorageV2",
+      "tags": "[variables('tags')]",
+      "sku": {
+        "name": "[variables('storageAccount').sku.name]",
+        "tier": "[variables('storageAccount').sku.tier]"
+      },
+      "properties": {
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "keySource": "Microsoft.Storage",
+          "services": {
+            "blob": {
+              "enabled": true
+            },
+            "file": {
+              "enabled": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "comments": "### RESOURCE - KEY VAULT ###",
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "[variables('keyVault').apiVersion]",
+      "name": "[variables('keyVault').name]",
+      "location": "[variables('keyVault').location]",
+      "tags": "[variables('tags')]",
+      "properties": {
+        "sku": {
+          "family": "[variables('keyVault').sku.family]",
+          "name": "[variables('keyVault').sku.name]"
+        },
+        "tenantId": "[subscription().tenantId]",
+        "enabledForDeployment": "[variables('keyVault').enabledForDeployment]",
+        "enabledForDiskEncryption": "[variables('keyVault').enabledForDiskEncryption]",
+        "enabledForTemplateDeployment": "[variables('keyVault').enabledForTemplateDeployment]",
+        "accessPolicies": []
+      }
+    }
+  ],
+  "outputs": {}
+}
