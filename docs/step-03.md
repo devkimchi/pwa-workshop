@@ -108,6 +108,6 @@ az ad sp create-for-rbac \
 
 마찬가지로 `STORAGE_ACCOUNT_NAME` 값을 애저 블롭 저장소 이름으로 설정합니다.
 
-![그림]
+![](../images/step-03-02.png)
 
 깃헙 리포지토리의 액션 탭에서 다시 워크플로우를 실행시킵니다. 이제는 성공합니다.
