@@ -9,7 +9,7 @@
       uses: actions/upload-artifact@v1
       with:
         name: app
-        path: src/WebApp/dist
+        path: build
 ```
 
 여기까지 수정한 후 워크플로우 파일을 리포지토리로 푸시합니다.
@@ -23,7 +23,7 @@ git push origin master
 
 그리고 결과를 확인합니다.
 
-![그림]
+![](../images/step-04-01.png)
 
 
 ## 배포 잡 설정 ##
