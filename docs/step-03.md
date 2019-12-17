@@ -24,7 +24,7 @@ jobs:
 
 아래와 같이 워크플로우 파일을 수정합니다.
 
-```bash
+```yaml
 name: Publish Static Web App to Azure Blob Storage
 
 on: push
@@ -49,7 +49,7 @@ git push origin master
 
 그리고 결과를 확인합니다. 다음에 아래 액션을 추가합니다.
 
-```bash
+```yaml
     - name: Login to Azure
       uses: Azure/login@v1
       with:
@@ -75,7 +75,7 @@ az ad sp create-for-rbac \
 
 깃헙 리포지토리의 액션 탭에서 다시 워크플로우를 실행시킵니다. 이제는 성공합니다. 다음에 아래 액션을 추가합니다.
 
-```bash
+```yaml
     - name: Install npm packages
       shell: bash
       run: |
@@ -94,13 +94,13 @@ az ad sp create-for-rbac \
 
 여기까지 수정한 후 푸시합니다. 그리고 결과를 확인합니다. 다음에 아래 액션을 추가합니다. 다시 실패하는 것을 확인합니다.
 
-```bash
+```yaml
     - name: Publish app
       uses: Azure/cli@v1.0.0
       with:
         azcliversion: latest
         inlineScript: |
-          az storage blob upload-batch -s $GITHUB_WORKSPACE/src/WebApp/dist -d \$web --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }}
+          az storage blob upload-batch -s build -d \$web --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }}
 ```
 
 

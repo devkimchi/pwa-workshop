@@ -40,7 +40,7 @@ git push origin master
       uses: actions/download-artifact@v1
       with:
         name: app
-        path: src/WebApp/dist
+        path: build
 
     - name: Login to Azure
       uses: Azure/login@v1
@@ -52,12 +52,12 @@ git push origin master
       with:
         azcliversion: latest
         inlineScript: |
-          az storage blob upload-batch -s $GITHUB_WORKSPACE/src/WebApp/dist -d \$web --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }}
+          az storage blob upload-batch -s build -d \$web --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }}
 ```
 
 여기까지 수정한 후 워크플로우 파일을 리포지토리로 푸시하고 결과를 확인합니다.
 
-![그림]
+![](../images/step-04-02.png)
 
 잡을 하나 더 추가합니다.
 
