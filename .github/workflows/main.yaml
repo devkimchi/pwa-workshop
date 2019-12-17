@@ -74,7 +74,7 @@ jobs:
       uses: azure/get-keyvault-secrets@v1.0
       id: keyvault_secrets
       with:
-        keyvault: <KEY_VAULT_NAME>
+        keyvault: kvpwaworkshop
         secrets: storageAccountProd
 
     - name: Publish app

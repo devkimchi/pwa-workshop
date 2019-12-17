@@ -113,7 +113,7 @@ az keyvault set-policy \
   --verbose
 ```
 
-> 자신의 UPN을 알고 싶으면 아래 명령어를 실행합니다.
+> 자신의 UPN(User Principal Name)을 알고 싶으면 아래 명령어를 실행합니다.
 > ```bash
 > az ad signed-in-user show
 > ```
@@ -128,7 +128,7 @@ az keyvault secret set \
   --verbose
 ```
 
-`deploy_to_prod` 잡의 마지막 액션인 `Publish app` 전에 아래의 액션을 추가합니다.
+`deploy_to_prod` 잡의 마지막 액션인 `Publish app` 직전에 아래의 액션을 추가합니다.
 
 ```yaml
     - name: Access to Key Vault
