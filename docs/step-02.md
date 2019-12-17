@@ -9,7 +9,7 @@ az storage blob service-properties update \
   --account-name <BLOB_STORAGE_NAME> \
   --static-website true \
   --index-document index.html \
-  --404-document 404/index.html \
+  --404-document 404.html \
   --verbose
 ```
 

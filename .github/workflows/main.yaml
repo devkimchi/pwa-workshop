@@ -30,9 +30,15 @@ jobs:
     #   run: |
     #     npm run test
 
-    - name: Publish app
-      uses: Azure/cli@v1.0.0
+    - name: Upload app
+      uses: actions/upload-artifact@v1
       with:
-        azcliversion: latest
-        inlineScript: |
-          az storage blob upload-batch -s build -d \$web --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }}
+        name: app
+        path: build
+
+    # - name: Publish app
+    #   uses: Azure/cli@v1.0.0
+    #   with:
+    #     azcliversion: latest
+    #     inlineScript: |
+    #       az storage blob upload-batch -s build -d \$web --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }}
