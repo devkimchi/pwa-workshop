@@ -83,7 +83,71 @@ git push origin master
       with:
         azcliversion: latest
         inlineScript: |
-          az storage blob upload-batch -s $GITHUB_WORKSPACE/src/WebApp/dist -d \$web --account-name ${{ secrets.STORAGE_ACCOUNT_NAME_2 }}
+          az storage blob upload-batch -s build -d \$web --account-name ${{ secrets.STORAGE_ACCOUNT_NAME_2 }}
+```
+
+여기까지 수정한 후 워크플로우 파일을 리포지토리로 푸시하고 결과를 확인합니다.
+
+![](../images/step-04-03.png)
+
+
+## 애저 키 저장소 통합하기 ##
+
+앞서 애저 CLI 로그인을 위해 생성했던 자격증명 객체를 애저 키 저장소에 등록합니다.
+
+```bash
+az keyvault set-policy \
+  -n <KEY_VAULT_NAME> \
+  --spn <CLIENT_ID> \
+  --secret-permissions get list \
+  --verbose
+```
+
+현재 로그인한 사용자도 애저 키 저장소에 등록합니다.
+
+```bash
+az keyvault set-policy \
+  -n <KEY_VAULT_NAME> \
+  --upn <USER_PRINCIPAL_NAME> \
+  --secret-permissions get set list \
+  --verbose
+```
+
+> 자신의 UPN을 알고 싶으면 아래 명령어를 실행합니다.
+> ```bash
+> az ad signed-in-user show
+> ```
+
+아래 명령어를 통해 시크릿을 `storageAccountProd` 라는 이름으로 하나 등록합니다.
+
+```bash
+az keyvault secret set \
+  --vault-name <KEY_VAULT_NAME> \
+  --name storageAccountProd \
+  --value <STORAGE_ACCOUNT_NAME> \
+  --verbose
+```
+
+`deploy_to_prod` 잡의 마지막 액션인 `Publish app` 전에 아래의 액션을 추가합니다.
+
+```yaml
+    - name: Access to Key Vault
+      uses: actions/get-keyvault-secrets
+      id: keyvault_secrets
+      with:
+        keyvault: <KEY_VAULT_NAME>
+        secrets: storageAccountProd
+```
+
+그리고, `Publish app` 액션을 아래와 같이 수정합니다.
+
+```yaml
+    - name: Publish app
+      uses: Azure/cli@v1.0.0
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az storage blob upload-batch -s build -d \$web --account-name ${{ steps.keyvault_secrets.outputs.storageAccountProd }}
 ```
 
 여기까지 수정한 후 워크플로우 파일을 리포지토리로 푸시하고 결과를 확인합니다.
