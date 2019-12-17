@@ -26,6 +26,15 @@ az storage account show \
 ```
 
 
+## PWA 패키지 복원 ##
+
+로컬에서 PWA를 실행시키기 위해서 우선 npm 패키지를 복원합니다.
+
+```bash
+npm install
+```
+
+
 ## PWA 로컬 빌드 ##
 
 로컬에서 PWA를 빌드합니다.
@@ -35,7 +44,7 @@ npm run build
 ```
 
 
-## PWA 로컬 테스트 ##
+## PWA 로컬 테스트 (이부분 현재 꺠지는 중) ##
 
 로컬에서 PWA를 테스트합니다.
 
@@ -55,3 +64,5 @@ az storage blob upload-batch \
   --account-name <BLOB_STORAGE_NAME> \
   --verbose
 ```
+
+배포가 끝난 후, 앞서 확인했던 애저 블롭 저장소 URL을 통해 웹사이트로 접속해 봅니다.
