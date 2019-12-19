@@ -54,6 +54,7 @@ const App = () => {
   return (
     <div className="notes">
       <Write addData={addData} />
+      <h1>List:</h1>
       <List data={data} />
     </div>
   )
