@@ -65,11 +65,11 @@ git push origin master
 
 ```bash
 az ad sp create-for-rbac \
-  --n <SERVICE_PRINCIPAL_NAME> \
+  -n <SERVICE_PRINCIPAL_NAME> \
   --sdk-auth
 ```
 
-이 명령어 실행 결과로 만들어지는 JSON 객체 값을 시크릿 변수 `AZURE_CREDENTIALS`에 할당합니다.
+이 명령어 실행 결과로 만들어지는 JSON 객체 값을 시크릿 변수 `AZURE_CREDENTIALS`에 할당합니다. 이 때 JSON 객체에 들어있는 `clientId` 값을 잘 기억해 둡니다.
 
 ![](../images/step-03-01.png)
 

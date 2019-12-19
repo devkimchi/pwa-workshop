@@ -63,7 +63,7 @@ az group create \
 
 > [비주얼 스튜디오 코드](https://code.visualstudio.com/docs/setup/setup-overview?WT.mc_id=pwaazureworkshop-event-juyoo)를 아직 설치하지 않았다면, 지금 설치하세요!
 
-먼저 아래와 같이 `azuredeploy.parameters.json` 파일을 수정합니다.
+먼저 아래와 같이 `resources` 디렉토리 아래에 있는 `azuredeploy.parameters.json` 파일을 수정합니다.
 
 ```json
 {
@@ -79,6 +79,10 @@ az group create \
   }
 }
 ```
+
+* `[COMMA_DELIMITED_STORAGE_ACCOUNT_NAME]`: 애저 블롭 저장소를 여러개 설치합니다. 따라서, 콤마로 저장소 이름을 구분합니다. 예) `pwaworkshop1,pwaworkshop2`
+* `[KEY_VAULT_NAME]`: 애저 키 저장소 이름을 지정합니다.
+* 여기서 블롭 저장소 이름과 키 저장소 이름은 유일해야 합니다. 따라서, 작업 도중에 다른 분들과 이름이 겹치는 경우도 있을 수 있으니, 본인만의 유니크한 작명법을 사용하시기 바랍니다.
 
 그리고 난 후 아래 커맨드를 실행시킵니다.
 

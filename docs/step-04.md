@@ -90,6 +90,8 @@ git push origin master
 
 ![](../images/step-04-03.png)
 
+혹시 실패한다면 `STORAGE_ACCOUNT_NAME_2` 시크릿 값을 지정했는지 확인하고, 만약 없으면 생성합니다.
+
 
 ## 애저 키 저장소 통합하기 ##
 
