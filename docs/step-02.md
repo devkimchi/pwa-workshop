@@ -44,12 +44,26 @@ npm run build
 ```
 
 
-## PWA 로컬 테스트 (이부분 현재 꺠지는 중) ##
+## PWA 로컬 테스트 ##
 
 로컬에서 PWA를 테스트합니다.
 
 ```bash
 npm run test
+```
+
+이 때 인터랙티브 모드로 테스트가 실행이 된다면 아래와 같이 `package.json` 파일을 수정합니다.
+
+```json
+{
+  ...
+  "scripts": {
+    ...
+    "test": "react-scripts test --watchAll=false",
+    ...
+  },
+  ...
+}
 ```
 
 
