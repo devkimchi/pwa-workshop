@@ -14,3 +14,26 @@ jobs:
       uses: Azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Install npm packages
+      shell: bash
+      run: |
+        npm install
+
+    - name: Build app
+      shell: bash
+      run: |
+        npm run build
+
+    - name: Test app
+      shell: bash
+      run: |
+        npm run test
+
+    - name: Publish app
+      uses: Azure/cli@v1.0.0
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az storage blob upload-batch -s build -d \$web --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }}
+
