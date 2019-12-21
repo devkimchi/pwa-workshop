@@ -79,6 +79,7 @@ az storage blob upload-batch \
   --verbose
 ```
 
+파워셸을 사용하는 분들은 `\$web` 대신에 `` `$web`` 을 사용해야 합니다.
 배포가 끝난 후, 앞서 확인했던 애저 블롭 저장소 URL을 통해 웹사이트로 접속해 봅니다.
 
 
