@@ -1,0 +1,11 @@
+name: Publish Static Web App to Azure Blob Storage
+
+on: push
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repo
+      uses: actions/checkout@v1
